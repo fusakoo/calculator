@@ -1,9 +1,17 @@
+// To Do (Last Update 08/21/2020)
+// 1. Add Error message when user divide num / 0
+// 2. User should be able to string together several operations -> currently bugged (only operates last 2 nums)
+// 3. Prevent users from inputting multiple '.' (limit to 1)
+// 4. Add history feature when user press Enter for =
+
 let result = 0;
 let num = 0, a, b;
 let operator = '';
 let displayValue = '';
+let historyLog = '';
 
 const log = document.querySelector('#log');
+const history = document.querySelector('#history');
 const resultValue = document.querySelector('#result');
 
 function add (a, b) {
@@ -39,6 +47,11 @@ function operate (operator, a, b) {
 function updateScreen() {
     log.innerHTML = displayValue;
     resultValue.innerHTML = result;
+    document.getElementById('equals').onclick = () => {
+        let tempHistory = displayValue + '=' + result + '<BR>';
+        historyLog += tempHistory;
+        history.innerHTML = historyLog;
+    }
 }
 
 function checkInput(e) {
@@ -73,6 +86,8 @@ function checkInput(e) {
         b = 0;
         displayValue = '';
         updateScreen();
+    } else if (this.id == 'clear-history') {
+        return;
     } else {
         num += this.id;
         displayValue += this.id;
@@ -81,11 +96,12 @@ function checkInput(e) {
     updateScreen();
 }
 
+function clearHistory() {
+    history.innerHTML = '';
+}
+
+const historyButton = document.querySelector('#clear-history')
+historyButton.addEventListener('click', clearHistory);
+
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => button.addEventListener('click', checkInput));
-
-window.addEventListener('keypress', keys);
-function keys(e) {
-    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-    this.id = key;
-}

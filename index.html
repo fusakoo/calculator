@@ -19,9 +19,9 @@
                 </div>
                 <div class="button-pad">
                     <button class="clear" id="all-clear">AC</button>
-                    <button class="clear" id="clear-entry">CE</button>
+                    <button class="clear" id="clear-entry" data-key="8"><i class="fas fa-backspace"></i></button>
 
-                    <button class="operator" id="/" data-key="111">/</button>
+                    <button class="operator" id="/" data-key="111">&divide;</button>
                     <button class="operator" id="*" data-key="106">&times;</button>
                     <button class="operator" id="+" data-key="107">+</button>
                     <button class="operator" id="-" data-key="109">-</button>
@@ -36,15 +36,23 @@
                     <button class="number" id="2" data-key="98">2</button>
                     <button class="number" id="1" data-key="97">1</button>
                     <button class="number" id="." data-key="110">.</button>
-                    <button class="number" id="0"  data-key="96">0</button>
+                    <button class="number" id="0" data-key="96">0</button>
 
-                    <button class="operator" id="equals">=</button>
+                    <button class="operator" id="equals" data-key="13">=</button>
                 </div>
+            </div>
+            <div id="history-container">
+                <p>History</p>
+                <div id="history">
+                    <!--Script adds history here-->
+                </div>
+                <button id="clear-history">Clear History</button>
             </div>
         </main>
         <footer>
             <p>Created by <a href="https://github.com/fusakoo" target="_blank"><i class="fab fa-github"></i> fusakoo</a></p>
         </footer>
+        <script src="scripts/keyboard.js" type="text/javascript"></script>
         <script src="scripts/calculator.js" type="text/javascript"></script>
     </body>
 </html>
