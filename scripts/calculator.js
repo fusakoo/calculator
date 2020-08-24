@@ -1,7 +1,7 @@
 // To Do (Last Update 08/21/2020)
-// 1. Add Error message when user divide num / 0
+// clear 1. Add Error message when user divide num / 0
 // 2. User should be able to string together several operations -> currently bugged (only operates last 2 nums)
-// 3. Prevent users from inputting multiple '.' (limit to 1)
+// clear 3. Prevent users from inputting multiple '.' (limit to 1)
 // 4. Add history feature when user press Enter for =
 
 let result = 0;
@@ -17,15 +17,12 @@ const resultValue = document.querySelector('#result');
 function add (a, b) {
 	result = a + b;
 }
-
 function subtract (a, b) {
 	result = a - b;
 }
-
 function multiply (a, b) {
     result = a * b;
 }
-
 function divide (a, b) {
     result = a / b;
 }
@@ -38,6 +35,10 @@ function operate (operator, a, b) {
     } else if (operator === '*') {
         return multiply(a,b);
     } else if (operator === '/') {
+        if (b == 0) {
+            alert('Wow there. Please don\'t try to break the calculator!');
+            return result = 'Infinite';
+        }
         return divide(a,b);
     } else {
         result = Number(num);
@@ -65,9 +66,11 @@ function checkInput(e) {
         displayValue += this.id;
         updateScreen();
     } else if (this.id == '.') {
-        num += this.id;
-        displayValue += this.id;
-        updateScreen();
+        if (displayValue.indexOf('.') === -1 ) {
+            num += this.id;
+            displayValue += this.id;
+            updateScreen();
+        } return;
     } else if (this.id == 'equals') {
         b = Number(num);
         operate(operator, a, b);
