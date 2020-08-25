@@ -9,6 +9,7 @@ let num = 0, a, b;
 let operator = '';
 let displayValue = '';
 let historyLog = '';
+let tempHistory = displayValue + '=' + result + '<BR>';
 
 const log = document.querySelector('#log');
 const history = document.querySelector('#history');
@@ -53,6 +54,15 @@ function updateScreen() {
         historyLog += tempHistory;
         history.innerHTML = historyLog;
     }
+    // Issue 08/24/2020 - functioning BUT adds multiple result lines. 
+    /* window.addEventListener('keydown', (e) => {
+        const key = document.querySelector(`button[data-key="${e.keyCode}"]`);
+        if (key.id == 'equals') {
+            let tempHistory = displayValue + '=' + result + '<BR>';
+            historyLog += tempHistory;
+            history.innerHTML = historyLog;
+        }
+    }); */
 }
 
 function checkInput(e) {

@@ -1,6 +1,6 @@
 // Keyboard support of the calculator
 window.addEventListener('keydown', function(e) {
-    // Prevents Quick Search popping up when pressing '/' key
+    // Prevents Quick Search popping up when '/' key is pressed
     e.preventDefault();
     const key = document.querySelector(`button[data-key="${e.keyCode}"]`);
     if(!key) return;
@@ -15,9 +15,11 @@ window.addEventListener('keydown', function(e) {
         displayValue += key.id;
         updateScreen();
     } else if (key.id == '.') {
-        num += key.id;
-        displayValue += key.id;
-        updateScreen();
+        if (displayValue.indexOf('.') === -1 ) {
+            num += key.id;
+            displayValue += key.id;
+            updateScreen();
+        } return;
     } else if (key.id == 'equals') {
         b = Number(num);
         operate(operator, a, b);
@@ -36,6 +38,8 @@ window.addEventListener('keydown', function(e) {
         b = 0;
         displayValue = '';
         updateScreen();
+    } else if (key.id == 'clear-history') {
+        return;
     } else {
         num += key.id;
         displayValue += key.id;
