@@ -1,6 +1,6 @@
 // To Do (Last Update 08/25/2020)
 // Current Issue(s)
-// Continuous calculation is bugged
+// n/a
 
 let value = ''; // Temporary value storage for firstOperand & secondOperand
 let firstOperand = ''; // Stores Num1
@@ -32,7 +32,7 @@ const dot = document.getElementById('.');
 disableEquals();
 disableOperators();
 
-// Click inputs
+// Inputs
 
 // Convert numbers to an array and run forEach on it
 Array.from(numbers).forEach(number => {
@@ -42,6 +42,7 @@ Array.from(numbers).forEach(number => {
 });
 
 function inputNumber(number) {
+    // Limit the input to 15 characters
     if (value.length < 15) {
         value += number;
     }
@@ -68,6 +69,7 @@ function inputOperator(operator) {
     checkInput();
     operation = operator;
     log.innerHTML += operator;
+    // Once operator is inputted, no longer store initial value as firstOperand (on to secondOperand)
     firstNumber = false;
     disableEquals();
     disableOperators();
@@ -92,13 +94,17 @@ function checkInput() {
             log.innerHTML = thousandSeparator(result);
             toggleEquals = false;
         }
-        if (result = 'Infinite') {
+        if (result === 'Infinite') {
             reset();
         }
     }
 }
 
 dot.addEventListener('click', () => {
+    addDecimal();
+})
+
+function addDecimal() {
     if (value.indexOf('.') !== -1 ) {
         dot.disabled = true;
         return;
@@ -107,7 +113,7 @@ dot.addEventListener('click', () => {
     resultDisplay.innerHTML += '.';
     dot.disabled = true;
     }
-})
+}
 
 equals.addEventListener('click', () => {
     calculate();
@@ -222,14 +228,17 @@ function operate(operator, firstOperand, secondOperand) {
     }
 }
 
+// Determines to what decimal place should the result be displaying to
 function maxDecimal(number1, number2) {
     return Math.max(decimalPlaces(number1), decimalPlaces(number2));
 }
 
+// Return number of decimal places (i.e. 1.002 = '3'; 1.01 = '2')
 function decimalPlaces(number) {
     number = number.toString();
     let arr = number.split('.');
     let decimalNumber = 0;
+    // Checks length of arr, and check the length of arr[1] (i.e. 1.01 -> ['1', '01'] = '2')
     if (arr.length === 1) {
         decimalNumber = 0;
     } else {
@@ -241,6 +250,8 @@ function decimalPlaces(number) {
     return decimalNumber;
 }
 
+// Rounds to the specified decimal point
+// Convert long numbers to exponential form
 function decimalRound(calculation, decimals) {
     let calculationResult = calculation.toFixed(decimals);
     if (result.length > 18) {
@@ -284,9 +295,6 @@ document.addEventListener('keydown', (e) => {
     console.log(e.key);
     e.preventDefault();
     switch (e.key) {
-        case '.':
-            dot.click();
-            break;
         case '1':
         case '2':
         case '3':
@@ -300,6 +308,9 @@ document.addEventListener('keydown', (e) => {
             inputNumber(e.key);
             break;
         // By separating (w/o using array method), prevents multiple operator input
+        case '.':
+            dot.click();
+            break;
         case '+':
             add.click();
             break;
