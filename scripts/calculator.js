@@ -1,6 +1,6 @@
 // To Do (Last Update 08/25/2020)
 // Current Issue(s)
-// Error message when single number + 'enter' key is pressed (prevented with click, not for keypress);
+// Continuous calculation is bugged
 
 let value = ''; // Temporary value storage for firstOperand & secondOperand
 let firstOperand = ''; // Stores Num1
@@ -127,7 +127,8 @@ function calculate() {
     toggleEquals = true;
     dot.disabled = false;
     updateScreen();
-    if (result = 'Infinite') {
+    if (result === 'Infinite') {
+        alert('Wow there. Please don\'t try to break the calculator!');
         reset();
     }
 }
@@ -216,12 +217,7 @@ function operate(operator, firstOperand, secondOperand) {
             if (decimals === 0) {
                 decimals = maxDecimal((num1 / num2), 0);
             }
-            if (num2 !== 0) {
-                decimalRound((num1 / num2), decimals);
-            } else {
-                alert('Wow there. Please don\'t try to break the calculator!');
-                return 'Infinite';
-            }
+            return num2 !== 0 ? decimalRound((num1 / num2), decimals) : 'Infinite';
             break;
     }
 }
@@ -318,13 +314,13 @@ document.addEventListener('keydown', (e) => {
             break;
         case '=':
         case 'Enter':
-            calculate();
+            equals.click();
             break;
         case 'Backspace':
-            remove();
+            del.click();
             break;
         case 'c':
-            reset();
+            clear.click();
             break;
     }
 });
