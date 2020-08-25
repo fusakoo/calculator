@@ -1,8 +1,8 @@
 // To Do (Last Update 08/25/2020)
-// Current Issues:
-// Key input - users can input multiple operator and . (works as intended on click)
+// Current Issue(s)
+// Error message when single number + 'enter' key is pressed (prevented with click, not for keypress);
 
-let value = '';
+let value = ''; // Temporary value storage for firstOperand & secondOperand
 let firstOperand = ''; // Stores Num1
 let secondOperand = ''; // Stores Num2
 let operation = ''; // Stores operator
@@ -20,6 +20,10 @@ let historyLog = '';
 
 const numbers = document.getElementsByClassName('number');
 const operators = document.getElementsByClassName('operator');
+const add = document.getElementById('+');
+const subtract = document.getElementById('-');
+const multiply = document.getElementById('*');
+const divide = document.getElementById('/');
 const equals = document.getElementById('equals');
 const clear = document.getElementById('clear');
 const del = document.getElementById('delete');
@@ -46,11 +50,18 @@ function inputNumber(number) {
     disableOperators();
 }
 
-Array.from(operators).forEach(operator => {
-    operator.addEventListener('click', () => {
-        inputOperator(operator.id);
-    })
-});
+add.addEventListener('click', () => {
+    inputOperator(add.id);
+})
+subtract.addEventListener('click', () => {
+    inputOperator(subtract.id);
+})
+multiply.addEventListener('click', () => {
+    inputOperator(multiply.id);
+})
+divide.addEventListener('click', () => {
+    inputOperator(divide.id);
+})
 
 function inputOperator(operator) {
     dot.disabled = false;
@@ -80,6 +91,9 @@ function checkInput() {
         if (toggleEquals === true) {
             log.innerHTML = thousandSeparator(result);
             toggleEquals = false;
+        }
+        if (result = 'Infinite') {
+            reset();
         }
     }
 }
@@ -113,6 +127,9 @@ function calculate() {
     toggleEquals = true;
     dot.disabled = false;
     updateScreen();
+    if (result = 'Infinite') {
+        reset();
+    }
 }
 
 clear.addEventListener('click', () => {
@@ -203,11 +220,9 @@ function operate(operator, firstOperand, secondOperand) {
                 decimalRound((num1 / num2), decimals);
             } else {
                 alert('Wow there. Please don\'t try to break the calculator!');
-                return result = 'Infinite';
+                return 'Infinite';
             }
             break;
-        default:
-            return result = 0;
     }
 }
 
@@ -268,30 +283,48 @@ function clearHistory() {
 
 // Key input support
 
-const numberKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ","];
-const opKeys = ["+", "-", "*", "/"];
-
 // Note: Requires the user to have their Numlock enabled in case of num pad/ten key
 document.addEventListener('keydown', (e) => {
-    console.log(e.key)
+    console.log(e.key);
     e.preventDefault();
-    if (numberKeys.includes(e.key)) {
-        inputNumber(e.key);
-    }
-    if (opKeys.includes(e.key)) {
-        inputOperator(e.key);
-    }
-    if (e.key === 'Backspace') {
-        remove();
-    }
-    if (e.key === 'c') {
-        reset();
-    }
-    if (e.key === 'Enter' || e.key === '=') {
-        calculate();
-        disableEquals();
-    }
-    if (e.key === "." && value.indexOf('.') === -1 ) {
-        dot.click();
+    switch (e.key) {
+        case '.':
+            dot.click();
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '0':
+            inputNumber(e.key);
+            break;
+        // By separating (w/o using array method), prevents multiple operator input
+        case '+':
+            add.click();
+            break;
+        case '-':
+            subtract.click();
+            break;
+        case '*':
+            multiply.click();
+            break;
+        case '/':
+            divide.click();
+            break;
+        case '=':
+        case 'Enter':
+            calculate();
+            break;
+        case 'Backspace':
+            remove();
+            break;
+        case 'c':
+            reset();
+            break;
     }
 });
