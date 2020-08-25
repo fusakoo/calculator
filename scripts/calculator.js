@@ -1,120 +1,297 @@
-// To Do (Last Update 08/21/2020)
-// clear 1. Add Error message when user divide num / 0
-// 2. User should be able to string together several operations -> currently bugged (only operates last 2 nums)
-// clear 3. Prevent users from inputting multiple '.' (limit to 1)
-// 4. Add history feature when user press Enter for =
+// To Do (Last Update 08/25/2020)
+// Current Issues:
+// Key input - users can input multiple operator and . (works as intended on click)
 
-let result = 0;
-let num = 0, a, b;
-let operator = '';
-let displayValue = '';
+let value = '';
+let firstOperand = ''; // Stores Num1
+let secondOperand = ''; // Stores Num2
+let operation = ''; // Stores operator
+let result = '';
+
+let firstNumber = true;
+let toggleEquals = false;
+
+const log = document.getElementById('log');
+const resultDisplay = document.getElementById('result');
+resultDisplay.innerHTML = '0';
+
+const history = document.getElementById('history');
 let historyLog = '';
-let tempHistory = displayValue + '=' + result + '<BR>';
 
-const log = document.querySelector('#log');
-const history = document.querySelector('#history');
-const resultValue = document.querySelector('#result');
+const numbers = document.getElementsByClassName('number');
+const operators = document.getElementsByClassName('operator');
+const equals = document.getElementById('equals');
+const clear = document.getElementById('clear');
+const del = document.getElementById('delete');
+const dot = document.getElementById('.');
 
-function add (a, b) {
-	result = a + b;
-}
-function subtract (a, b) {
-	result = a - b;
-}
-function multiply (a, b) {
-    result = a * b;
-}
-function divide (a, b) {
-    result = a / b;
+disableEquals();
+disableOperators();
+
+// Click inputs
+
+// Convert numbers to an array and run forEach on it
+Array.from(numbers).forEach(number => {
+    number.addEventListener('click', () => {
+        inputNumber(number.id);
+    })
+});
+
+function inputNumber(number) {
+    if (value.length < 15) {
+        value += number;
+    }
+    resultDisplay.innerHTML = value;
+    disableEquals();
+    disableOperators();
 }
 
-function operate (operator, a, b) {
-    if (operator === '+') {
-        return add(a, b);
-    } else if (operator === '-') {
-        return subtract(a,b);
-    } else if (operator === '*') {
-        return multiply(a,b);
-    } else if (operator === '/') {
-        if (b == 0) {
-            alert('Wow there. Please don\'t try to break the calculator!');
-            return result = 'Infinite';
+Array.from(operators).forEach(operator => {
+    operator.addEventListener('click', () => {
+        inputOperator(operator.id);
+    })
+});
+
+function inputOperator(operator) {
+    dot.disabled = false;
+    checkInput();
+    operation = operator;
+    log.innerHTML += operator;
+    firstNumber = false;
+    disableEquals();
+    disableOperators();
+}
+
+function checkInput() {
+    if (firstNumber === true) {
+        firstOperand = value;
+        log.innerHTML += thousandSeparator(value);
+        value = '';
+    } else if (firstNumber === false) {
+        secondOperand = value;
+        if (secondOperand !== '') {
+            result = operate(operation, firstOperand, secondOperand);
         }
-        return divide(a,b);
-    } else {
-        result = Number(num);
+        resultDisplay.innerHTML = thousandSeparator(result);
+        firstOperand = result;
+        value = '';
+        log.innerHTML += thousandSeparator(secondOperand);
+        secondOperand = '';
+        if (toggleEquals === true) {
+            log.innerHTML = thousandSeparator(result);
+            toggleEquals = false;
+        }
     }
 }
 
-function updateScreen() {
-    log.innerHTML = displayValue;
-    resultValue.innerHTML = result;
-    document.getElementById('equals').onclick = () => {
-        let tempHistory = displayValue + '=' + result + '<BR>';
-        historyLog += tempHistory;
-        history.innerHTML = historyLog;
-    }
-    // Issue 08/24/2020 - functioning BUT adds multiple result lines. 
-    /* window.addEventListener('keydown', (e) => {
-        const key = document.querySelector(`button[data-key="${e.keyCode}"]`);
-        if (key.id == 'equals') {
-            let tempHistory = displayValue + '=' + result + '<BR>';
-            historyLog += tempHistory;
-            history.innerHTML = historyLog;
-        }
-    }); */
-}
-
-function checkInput(e) {
-    if (this.id == '+' || this.id == '-' || this.id == '*' || this.id == '/') {
-        if (result !== 0) {
-            displayValue = result;
-        }
-        operator = this.id;
-        a = Number(num);
-        num = 0;
-        displayValue += this.id;
-        updateScreen();
-    } else if (this.id == '.') {
-        if (displayValue.indexOf('.') === -1 ) {
-            num += this.id;
-            displayValue += this.id;
-            updateScreen();
-        } return;
-    } else if (this.id == 'equals') {
-        b = Number(num);
-        operate(operator, a, b);
-        console.log(result);
-
-        updateScreen();
-        num = result;
-    } else if (this.id == 'clear-entry') {
-        num = num.slice(0, num.length-1);
-        displayValue = displayValue.slice(0, displayValue.length-1);
-        updateScreen;
-    } else if (this.id == 'all-clear') {
-        result = 0;
-        num = 0;
-        a = 0;
-        b = 0;
-        displayValue = '';
-        updateScreen();
-    } else if (this.id == 'clear-history') {
+dot.addEventListener('click', () => {
+    if (value.indexOf('.') !== -1 ) {
+        dot.disabled = true;
         return;
-    } else {
-        num += this.id;
-        displayValue += this.id;
-        updateScreen;
+    } else { 
+    value += '.';
+    resultDisplay.innerHTML += '.';
+    dot.disabled = true;
     }
+})
+
+equals.addEventListener('click', () => {
+    calculate();
+});
+
+function calculate() {
+    secondOperand = value;
+    if (secondOperand !== '') {
+        result = operate(operation, firstOperand, secondOperand);
+    }
+    resultDisplay.innerHTML = thousandSeparator(result);
+    firstOperand = result;
+    log.innerHTML += thousandSeparator(secondOperand);
+    log.innerHTML += equals.innerHTML;
+    value = '';
+    disableEquals();
+    toggleEquals = true;
+    dot.disabled = false;
     updateScreen();
 }
 
-function clearHistory() {
-    history.innerHTML = '';
+clear.addEventListener('click', () => {
+    reset();
+});
+
+function reset() {
+    firstOperand = '';
+    secondOperand = '';
+    firstNumber = true;
+    operation = '';
+    result = '';
+    value = '';
+    log.innerHTML = '';
+    resultDisplay.innerHTML = '0';
+    toggleEquals = false;
+    for (let number of numbers) {
+        number.disabled = false;
+    }
+    for (let operator of operators) {
+        operator.disabled = true;
+    }
+    dot.disabled = false;
+    del.disabled = false;
+}
+
+del.addEventListener('click', () => {
+    remove();
+});
+
+function remove() {
+    value = value.slice(0,-1);
+    if (value !== '') {
+        resultDisplay.innerHTML = value;
+    } else {
+        resultDisplay.innerHTML = '0';
+    }
+}
+
+function disableOperators() {
+    for (let operator of operators) {
+        if (value === '') {
+            operator.disabled = true;
+        } else {
+            operator.disabled = false;
+        }
+    }
+}
+
+function disableEquals() {
+    if (firstNumber === true || firstOperand === '' || value === '') {
+        equals.disabled = true;
+    } else {
+        equals.disabled = false;
+    }
+}
+
+// Calculation
+
+function operate(operator, firstOperand, secondOperand) {
+    num1 = Number(firstOperand);
+    num2 = Number(secondOperand);
+    let decimals = maxDecimal(num1, num2);
+    switch (operator) {
+        case '+':
+            if (decimals === 0) {
+                decimals = maxDecimal((num1 + num2), 0);
+            }
+            return decimalRound((num1 + num2), decimals);
+            break;
+        case '-':
+            if (decimals === 0) {
+                decimals = maxDecimal((num1 - num2), 0);
+            }
+            return decimalRound((num1 - num2), decimals);
+            break;
+        case '*':
+            if (decimals === 0) {
+                decimals = maxDecimal((num1 * num2), 0);
+            }
+            return decimalRound((num1 * num2), decimals);
+            break;
+        case '/':
+            if (decimals === 0) {
+                decimals = maxDecimal((num1 / num2), 0);
+            }
+            if (num2 !== 0) {
+                decimalRound((num1 / num2), decimals);
+            } else {
+                alert('Wow there. Please don\'t try to break the calculator!');
+                return result = 'Infinite';
+            }
+            break;
+        default:
+            return result = 0;
+    }
+}
+
+function maxDecimal(number1, number2) {
+    return Math.max(decimalPlaces(number1), decimalPlaces(number2));
+}
+
+function decimalPlaces(number) {
+    number = number.toString();
+    let arr = number.split('.');
+    let decimalNumber = 0;
+    if (arr.length === 1) {
+        decimalNumber = 0;
+    } else {
+        decimalNumber = arr[1].length;
+    }
+    if (decimalNumber > 16) {
+        decimalNumber = 16;
+    }
+    return decimalNumber;
+}
+
+function decimalRound(calculation, decimals) {
+    let calculationResult = calculation.toFixed(decimals);
+    if (result.length > 18) {
+        return Number(result).toExponential();
+    } else {
+        return calculationResult;
+    }
+}
+
+function thousandSeparator(number) {
+    // Split the number (result) into an array
+    let arr = number.split('.');
+    if (arr.length === 1) {
+        // Insert ',' to the 1st parenthesized submatch string (every 3 numbers)
+        return number.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    } else if (arr.length === 2) {
+        arr[0] = arr[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        return arr.join('.');
+    }
+}
+
+// History feature
+
+function updateScreen() {
+    let tempHistory = `${log.innerHTML}` + `${thousandSeparator(result)}` + '<BR>';
+    historyLog += tempHistory;
+    history.innerHTML = historyLog;
 }
 
 const historyButton = document.querySelector('#clear-history')
 historyButton.addEventListener('click', clearHistory);
 
-const buttons = document.querySelectorAll('button');
-buttons.forEach(button => button.addEventListener('click', checkInput));
+function clearHistory() { 
+    history.innerHTML = '';
+}
+
+// Key input support
+
+const numberKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ","];
+const opKeys = ["+", "-", "*", "/"];
+
+// Note: Requires the user to have their Numlock enabled in case of num pad/ten key
+document.addEventListener('keydown', (e) => {
+    console.log(e.key)
+    e.preventDefault();
+    if (numberKeys.includes(e.key)) {
+        inputNumber(e.key);
+    }
+    if (opKeys.includes(e.key)) {
+        inputOperator(e.key);
+    }
+    if (e.key === 'Backspace') {
+        remove();
+    }
+    if (e.key === 'c') {
+        reset();
+    }
+    if (e.key === 'Enter' || e.key === '=') {
+        calculate();
+        disableEquals();
+    }
+    if (e.key === "." && value.indexOf('.') === -1 ) {
+        dot.click();
+    }
+});
