@@ -135,6 +135,7 @@ function calculate() {
     updateHistory();
     if (result === 'Infinite') {
         alert('Wow there. Please don\'t try to break the calculator!');
+        equals.classList.toggle('button-active');
         reset();
     }
 }
@@ -301,9 +302,7 @@ function clearHistory() {
 document.addEventListener('keydown', (e) => {
     console.log(e.key);
     e.preventDefault();
-    let key = e.key;
-    let button = document.getElementById(key);
-    button.classList.add('button-active');
+    toggleActive(e);
     switch (e.key) {
         case '1':
         case '2':
@@ -347,7 +346,11 @@ document.addEventListener('keydown', (e) => {
 });
 
 document.addEventListener('keyup', (e) => {
+    toggleActive(e);
+});
+
+function toggleActive(e) {
     let key = e.key;
     let button = document.getElementById(key);
-    button.classList.remove('button-active');
-});
+    button.classList.toggle('button-active');
+}
