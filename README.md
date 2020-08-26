@@ -7,4 +7,6 @@
 <h2>ToDo / Future Updates</h2>
 <ul>
     <li>PEMDAS support</li>
+    <li>Reset operation when new number is inputted post-operation (e.g. 3*3= followed by 3+ should only show '3+')</li>
+        <li>However, if user inputs an operator, continue on with the current operation (e.g. 3*3= followed by +3= should result 12)</li>
 </ul>
