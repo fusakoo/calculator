@@ -10,6 +10,7 @@
     <body>
         <header>
             <h1>Calculator</h1>
+            <p id="descriptor">Non-PEMDAS. Key input supported.</p>
         </header>
         <main>
             <div id="calculator">
@@ -18,8 +19,8 @@
                     <div class="screen-content" id="result"></div>
                 </div>
                 <div class="buttons">
-                    <button id="clear" class="num-pad">AC</button>
-                    <button id="delete" class="num-pad" ><i class="fas fa-backspace"></i></button>
+                    <button id="c" class="num-pad">AC</button>
+                    <button id="Backspace" class="num-pad" ><i class="fas fa-backspace"></i></button>
 
                     <button class="operator num-pad" id="/" name="divide">&divide;</button>
                     <button class="operator num-pad" id="*" name="multiply">&times;</button>
@@ -40,7 +41,7 @@
                     <button class="number num-pad" id="." name="dot">.</button>
                     <button class="number num-pad" id="0" name="zero">0</button>
 
-                    <button id="equals" class="num-pad">=</button>
+                    <button id="Enter" class="num-pad">=</button>
                 </div>
             </div>
             <div id="history-container">
@@ -52,7 +53,7 @@
             </div>
         </main>
         <footer>
-            <p>Created by  <a href="https://github.com/fusakoo" target="_blank"><i class="fab fa-github"></i> fusakoo</a></p>
+            <p>Created by <a href="https://github.com/fusakoo" target="_blank"><i class="fab fa-github"></i> fusakoo</a></p>
         </footer>
         <script src="scripts/calculator.js" type="text/javascript"></script>
     </body>

@@ -1,6 +1,3 @@
-/* Todo */
-/* Add animation when key is pressed */
-
 @import url('https://fonts.googleapis.com/css?family=Comfortaa|Roboto:400,700');
 
 body {
@@ -24,11 +21,26 @@ h1 {
     text-shadow: 7px 7px rgba(255, 174, 0, 0.8);
 }
 
+#descriptor {
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    opacity: 0.6;
+    font-size: 0.8em;
+    margin-top: -1em;
+}
+
 main {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     justify-content: center;
+}
+
+@media only screen and (max-width: 790px) {
+    main {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 /* Calculator */
@@ -79,15 +91,17 @@ main {
 .num-pad:hover {
     background-color: rgba(255,255,255,0.8);
     color: rgba(0,0,0,0.8);
+    transition: 100ms ease-out;
 }
 
-.num-pad:active {
+.num-pad:active, .button-active {
     background-color: rgba(255,255,255,0.8);
     color: rgba(0,0,0,0.8);
     transform: scale(1.05);
+    transition: 100ms ease-out;
 }
 
-#clear {
+#c {
     grid-area: ac;
 }
 [name=multiply] {
@@ -108,7 +122,7 @@ main {
 [name=zero] {
     border-radius: 0 0 0 0.5em;
 }
-#equals {
+#Enter {
     grid-area: equals;
     border-radius: 0 0 0.5em 0;
 }
@@ -127,10 +141,22 @@ main {
     justify-content: space-between;
 }
 
+@media only screen and (max-width: 790px) {
+    #history-container {
+        height: 25em;
+        margin-top: 1em;
+        align-items: center;
+    }
+    #history {
+        height: 20em;
+    }
+}
+
 h3 {
+    font-family: 'Comfortaa', sans-serif;
     color: white;
     font-weight: 700;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 #history {
@@ -158,6 +184,13 @@ h3 {
 #clear-history:hover {
     background-color: rgba(255,255,255,0.8);
     color: rgba(0,0,0,0.8);
+}
+
+#clear-history:active {
+    background-color: rgba(255,255,255,0.8);
+    color: rgba(0,0,0,0.8);
+    transform: scale(0.9);
+    transition: 150ms ease;
 }
 
 /* Footer */

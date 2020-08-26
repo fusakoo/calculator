@@ -1,4 +1,4 @@
-// To Do (Last Update 08/25/2020)
+// To Do (Last Update 08/26/2020)
 // Current Issue(s)
 // n/a
 
@@ -24,9 +24,9 @@ const add = document.getElementById('+');
 const subtract = document.getElementById('-');
 const multiply = document.getElementById('*');
 const divide = document.getElementById('/');
-const equals = document.getElementById('equals');
-const clear = document.getElementById('clear');
-const del = document.getElementById('delete');
+const equals = document.getElementById('Enter');
+const clear = document.getElementById('c');
+const del = document.getElementById('Backspace');
 const dot = document.getElementById('.');
 
 disableEquals();
@@ -301,6 +301,9 @@ function clearHistory() {
 document.addEventListener('keydown', (e) => {
     console.log(e.key);
     e.preventDefault();
+    let key = e.key;
+    let button = document.getElementById(key);
+    button.classList.add('button-active');
     switch (e.key) {
         case '1':
         case '2':
@@ -341,4 +344,10 @@ document.addEventListener('keydown', (e) => {
             clear.click();
             break;
     }
+});
+
+document.addEventListener('keyup', (e) => {
+    let key = e.key;
+    let button = document.getElementById(key);
+    button.classList.remove('button-active');
 });
