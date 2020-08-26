@@ -132,7 +132,7 @@ function calculate() {
     disableEquals();
     toggleEquals = true;
     dot.disabled = false;
-    updateScreen();
+    updateHistory();
     if (result === 'Infinite') {
         alert('Wow there. Please don\'t try to break the calculator!');
         reset();
@@ -161,6 +161,7 @@ function reset() {
     }
     dot.disabled = false;
     del.disabled = false;
+    nextSession();
 }
 
 del.addEventListener('click', () => {
@@ -275,9 +276,14 @@ function thousandSeparator(number) {
 
 // History feature
 
-function updateScreen() {
+function updateHistory() {
     let tempHistory = `${log.innerHTML}` + `${thousandSeparator(result)}` + '<BR>';
     historyLog += tempHistory;
+    history.innerHTML = historyLog;
+}
+
+function nextSession() {
+    historyLog += '<BR>';
     history.innerHTML = historyLog;
 }
 
@@ -285,6 +291,7 @@ const historyButton = document.querySelector('#clear-history')
 historyButton.addEventListener('click', clearHistory);
 
 function clearHistory() { 
+    historyLog = '';
     history.innerHTML = '';
 }
 

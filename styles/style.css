@@ -1,0 +1,179 @@
+/* Todo */
+/* Add animation when key is pressed */
+
+@import url('https://fonts.googleapis.com/css?family=Comfortaa|Roboto:400,700');
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(45deg, #0F2027, #203A43, #2C5364);
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    margin: 2em 0;
+}
+
+h1 {
+    font-family: 'Comfortaa', sans-serif;
+    color: white;
+    font-size: 2.5em;
+    text-shadow: 7px 7px rgba(255, 174, 0, 0.8);
+}
+
+main {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Calculator */
+#calculator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 22em;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Screen */
+
+.screen-content {
+    height: 1.5em;
+    text-align: right;
+    padding: 1em 1em 0.8em 0;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    font-size: 1em;
+}
+
+#log {
+    border-radius: 0.5em 0.5em 0 0;
+}
+
+/* Calculator buttons*/
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: 
+        "ac ac delete divide"
+        "seven eight nine multiply"
+        "four five six minus"
+        "one two three plus"
+        "zero dot equals equals";
+}
+
+.num-pad {
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    height: 5em;
+    font-size: 1em;
+}
+
+.num-pad:hover {
+    background-color: rgba(255,255,255,0.8);
+    color: rgba(0,0,0,0.8);
+}
+
+.num-pad:active {
+    background-color: rgba(255,255,255,0.8);
+    color: rgba(0,0,0,0.8);
+    transform: scale(1.05);
+}
+
+#clear {
+    grid-area: ac;
+}
+[name=multiply] {
+    grid-area: multiply;
+}
+[name=divide] {
+    grid-area: divide;
+}
+[name=plus] {
+    grid-area: plus;
+}
+[name=minus] {
+    grid-area: minus;
+}
+[name=dot] {
+    grid-area: dot;
+}
+[name=zero] {
+    border-radius: 0 0 0 0.5em;
+}
+#equals {
+    grid-area: equals;
+    border-radius: 0 0 0.5em 0;
+}
+
+/* History*/
+#history-container {
+    font-family: 'Roboto', sans-serif;
+    /* border: 1px solid red; */
+    height: 35em;
+    width: 20em;
+    padding: 0 1em;
+    margin: 0 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+}
+
+h3 {
+    color: white;
+    font-weight: 700;
+    opacity: 0.8;
+}
+
+#history {
+    color: white;
+    opacity: 0.7;
+    /* border: 1px solid red; */
+    height: 30em;
+    width: 20em;
+    margin-bottom: 0.5em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#clear-history {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    border-radius: 0.5em;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#clear-history:hover {
+    background-color: rgba(255,255,255,0.8);
+    color: rgba(0,0,0,0.8);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    font-family: 'Comfortaa', sans-serif;
+    color: rgba(255,255,255,0.7);
+    margin: 2em;
+}
+
+a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.5);
+}
+
+a:hover {
+    color: rgba(255, 174, 0, 0.6);
+    transition: color 1s;
+}
